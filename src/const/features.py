@@ -8,3 +8,5 @@ INT_FEATURES = ['bedrooms', 'bathrooms', 'floors', 'yr_renovated']
 PRICE = 'price'
 
 DATE = 'date'
+
+INDEX = 'id'
