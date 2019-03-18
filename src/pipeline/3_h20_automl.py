@@ -1,9 +1,9 @@
 import h2o
 from h2o.automl import H2OAutoML
 from os.path import join
-from src.const import columns
+
+from src.const import features
 from src.const import paths
-from src.helper_function import prepare_correct_format_for_result
 from src.helper_function import import_files
 
 
@@ -21,16 +21,16 @@ def run_auto_ml(_df_train,
         max_runtime_secs=_max_runtime_secs,
         nfolds=_nfolds,
         exclude_algos=_exclude_algos,
-       # stopping_metric=_stopping_metric,
         sort_metric=_sort_metric
     )
 
     list_train_columns = list(_df_train.columns)
-    list_train_columns.remove(columns.TIME_TO_FAILURE)
+    list_train_columns.remove(features.PRICE)
+
     print('>>>>>>>>>>>>>> All set, starting training')
     aml.train(
         x=list_train_columns,
-        y=columns.TIME_TO_FAILURE,
+        y=features.PRICE,
         training_frame=hf_train
     )
 
@@ -63,8 +63,9 @@ def test_auto_ml(_model, _df_test):
 if __name__ == '__main__':
     h2o.init()
 
-    df_train = import_files.import_clean_train_set(path=paths.FILE_TRAIN)
+    df_train = import_files.import_auto_train_data()
+    df_test = import_files.import_auto_test_data()
 
-    # run_auto_ml(df_train)
+    run_auto_ml(df_train)
 
     # test_auto_ml('StackedEnsemble_AllModels_AutoML_20190127_205517', df_test)

@@ -13,3 +13,6 @@ DIR_PREDICTION = join(DIR_DATA_INTERNAL, 'prediction')
 DIR_CLEAN_DATA = join(DIR_DATA_INTERNAL, 'clean_data')
 
 FILE_TRAIN_CLEAR = join(DIR_CLEAN_DATA, 'train_clear.csv')
+
+FILE_TRAIN_AUTO = join(DIR_CLEAN_DATA, 'train_auto.csv')
+FILE_TEST_AUTO = join(DIR_CLEAN_DATA, 'test_auto.csv')
