@@ -1,6 +1,7 @@
 import h2o
 from h2o.automl import H2OAutoML
 from os.path import join
+from sklearn.metrics import mean_absolute_error
 
 from src.const import features
 from src.const import paths
@@ -13,6 +14,15 @@ def run_auto_ml(_df_train,
                 _stopping_metric='mse',
                 _sort_metric='mae',
                 _exclude_algos=['DeepLearning']):
+    """
+
+    :param _df_train: train DataFrames with all features
+    :param _max_runtime_secs: Int, number of seconds that our auto ml will be learn
+    :param _nfolds: Int, number of fold
+    :param _stopping_metric: Stop metrics for algo
+    :param _sort_metric: Sort metrics for algo
+    :param _exclude_algos: Excluded algo, in default DeepLearning
+    """
 
     print('>>>>>>>>>>>>>> Preparing model and data for model: --{0}min--'.format(_max_runtime_secs / 60))
     hf_train = h2o.H2OFrame(_df_train)
@@ -54,10 +64,9 @@ def test_auto_ml(_model, _df_test):
     print('>>>>>>>>>>>>>> Predict results for test set')
     df_pred = model.predict(hf_test).as_data_frame()
 
-    print('>>>>>>>>>>>>>> Predict results for test set')
-    results_path = join(paths.DIR_PREDICTION, 'results_h2o_{}'.format(_model))
-    df_pred = prepare_correct_format_for_result.prepare_result_in_correct_format(df_pred)
-    df_pred.to_csv(results_path)
+    print('>>>>>>>>>>>>>> Calculate mean absolute error')
+    m_a_e = mean_absolute_error(df_pred.values, _df_test[features.PRICE].values)
+    print('Mean absolute error:  {}'.format(m_a_e))
 
 
 if __name__ == '__main__':
@@ -66,6 +75,6 @@ if __name__ == '__main__':
     df_train = import_files.import_auto_train_data()
     df_test = import_files.import_auto_test_data()
 
-    run_auto_ml(df_train)
+    # run_auto_ml(df_train)
 
-    # test_auto_ml('StackedEnsemble_AllModels_AutoML_20190127_205517', df_test)
+    test_auto_ml('XGBoost_3_AutoML_20190317_222432', df_test)
