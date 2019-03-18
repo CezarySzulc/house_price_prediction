@@ -14,7 +14,7 @@ pd.options.mode.chained_assignment = None
 
 def auto_preprocessing(number_iteration_to_gen_features=10, generate_until_improved=True, save=True):
     """
-    Generate more features. USed xgb model for this.
+    Generate more features. Used xgb model for this.
     :param number_iteration_to_gen_features: Number of iteration for generate more features
     :param generate_until_improved: Bool if 'True' then generating as many features as score will be improving
     :param save: Bool, option to save data.
